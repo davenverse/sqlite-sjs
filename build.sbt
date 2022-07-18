@@ -28,7 +28,7 @@ val munitCatsEffectV = "1.0.7"
 
 // Projects
 lazy val `sqlite-sjs` = tlCrossRootProject
-  .aggregate(core, shims, examples)
+  .aggregate(core, examples)
 
 lazy val core = project.in(file("core"))
   .enablePlugins(ScalaJSPlugin)
@@ -48,7 +48,7 @@ lazy val core = project.in(file("core"))
 
       "io.circe"                    %%% "circe-core"                 % circeV,
       "io.circe"                    %%% "circe-scalajs"              % circeV,
-      
+
       "io.circe"                    %%% "circe-parser"               % circeV % Test,
 
       "org.typelevel"               %%% "munit-cats-effect-3"        % munitCatsEffectV         % Test,
@@ -67,21 +67,21 @@ lazy val examples = project
     scalaJSUseMainModuleInitializer := true,
   )
 
-lazy val shims = project
-  .in(file("shims"))
-  .enablePlugins(NoPublishPlugin)
-  .enablePlugins(ScalaJSPlugin)
-  .enablePlugins(ScalablyTypedConverterPlugin)
-  .settings(
+// lazy val shims = project
+//   .in(file("shims"))
+//   .enablePlugins(NoPublishPlugin)
+//   .enablePlugins(ScalaJSPlugin)
+//   .enablePlugins(ScalablyTypedConverterPlugin)
+//   .settings(
 
-    Compile / npmDependencies ++= Seq(
-      "sqlite" -> "4.1.1",
-      "sqlite3" -> "5.0.9"
-    ),
-    stIgnore := List(
-      "sqlite3"
-    )
-  )
+//     Compile / npmDependencies ++= Seq(
+//       "sqlite" -> "4.1.1",
+//       "sqlite3" -> "5.0.9"
+//     ),
+//     stIgnore := List(
+//       "sqlite3"
+//     )
+//   )
   
 
 lazy val site = project.in(file("site"))
