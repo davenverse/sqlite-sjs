@@ -25,6 +25,8 @@ val circeV = "0.14.2"
 val doobieV = "1.0.0-RC2"
 val munitCatsEffectV = "1.0.7"
 
+ThisBuild / mimaPreviousArtifacts := Set()
+
 
 // Projects
 lazy val `sqlite-sjs` = tlCrossRootProject
