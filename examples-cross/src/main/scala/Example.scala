@@ -13,8 +13,9 @@ object Example extends IOApp.Simple {
       _ <- if (init.isEmpty) IO.unit else IO.println("Initial State:") 
       _ <- init.traverse(h => IO.println(h))
       _ <- IO.println("Please Say Hello To Someone or say CLEAR:")
-      who <- fs2.io.stdin[IO](4096).through(fs2.text.utf8.decode).takeThrough(_.contains("\n")).compile.string.map(_.trim())
-      // who <- std.Console[IO].readLine // BROKEN
+      // Hangs on js
+      // who <- fs2.io.stdin[IO](4096).through(fs2.text.utf8.decode).takeThrough(_.contains("\n")).compile.string.map(_.trim())
+      who <- std.Console[IO].readLine // BROKEN
       _ <- if (who === "CLEAR") clear(cross) else sayHello(cross, who)
     } yield ()
   }

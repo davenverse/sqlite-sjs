@@ -5,7 +5,7 @@ import cats.syntax.all._
 
 // Use this rather than boolean in models, otherwise javascript platform will
 // die. 
-case class IntBoolean(boolean: Boolean) extends AnyVal
+case class IntBoolean(boolean: Boolean)
 object IntBoolean {
   implicit val decoder: Decoder[IntBoolean] = new Decoder[IntBoolean]{
     def apply(c: HCursor): Decoder.Result[IntBoolean] = 
