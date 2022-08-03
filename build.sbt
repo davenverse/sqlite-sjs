@@ -25,8 +25,6 @@ val circeV = "0.14.2"
 val doobieV = "1.0.0-RC2"
 val munitCatsEffectV = "1.0.7"
 
-ThisBuild / mimaPreviousArtifacts := Set()
-
 
 // Projects
 lazy val `sqlite-sjs` = tlCrossRootProject
@@ -42,6 +40,7 @@ lazy val core = project.in(file("core"))
       "sqlite" -> "4.1.1",
       "sqlite3" -> "5.0.9"
     ),
+    mimaPreviousArtifacts := Set(),
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule)},
 
     libraryDependencies ++= Seq(
@@ -74,6 +73,7 @@ lazy val cross = crossProject(JVMPlatform, JSPlatform)
   .in(file("cross"))
   .settings(
     name := "sqlite-sjs-cross",
+    mimaPreviousArtifacts := Set(),
     libraryDependencies ++= Seq(
       "io.circe"                    %%% "circe-core"                 % circeV,
     )
