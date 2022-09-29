@@ -11,7 +11,7 @@ private[sqlitenative] class SqliteShim[F[_]: Sync](db: SQLiteConnection){
     ()
   }
 
-  def get(sql: String, params: List[SqliteType] = Nil): F[Option[SqliteType]] = Sync[F].blocking{
+  def get(sql: String, params: List[SqliteType] = Nil): F[Option[List[SqliteType]]] = Sync[F].blocking{
     val p = db.prepare(sql)
     params.zipWithIndex.foreach{
       case (t, index) => t match {
@@ -24,24 +24,32 @@ private[sqlitenative] class SqliteShim[F[_]: Sync](db: SQLiteConnection){
       }
     }
     var i = 0
-    var out = Option.empty[SqliteType]
+    var out = Option.empty[List[SqliteType]]
     while (p.step() && i < 1){
-      val intermediate : Option[SqliteType] = p.columnValue(i) match {
-        case null => SqliteNull().some
-        case i: Int => SqliteInt(i).some
-        case b: Array[Byte] => SqliteArray(b).some
-        case d: Double => SqliteDouble(d).some
-        case l: Long => SqliteLong(l).some
-        case s: String => SqliteString(s).some
-        case _ => None
+      val collumnCount = p.columnCount()
+      val rowIntermediate = new scala.collection.mutable.ListBuffer[SqliteType]
+
+      for {
+        i <- 0 until collumnCount
+      } yield {
+        val columnIntermediate = p.columnValue(i) match {
+          case null => SqliteNull().some
+          case i: Int => SqliteInt(i).some
+          case b: Array[Byte] => SqliteArray(b).some
+          case d: Double => SqliteDouble(d).some
+          case l: Long => SqliteLong(l).some
+          case s: String => SqliteString(s).some
+          case _ => None
+        }
+        columnIntermediate.foreach(s => rowIntermediate += s)
       }
-      out = intermediate
+      out = rowIntermediate.toList.some
       i = i + 1
     }
     p.dispose() // Make Resource
     out
   }
-  def all(sql: String, params: List[SqliteType] = Nil): F[List[SqliteType]] = Sync[F].blocking{
+  def all(sql: String, params: List[SqliteType] = Nil): F[List[List[SqliteType]]] = Sync[F].blocking{
     val p = db.prepare(sql)
     params.zipWithIndex.foreach{
       case (t, index) => t match {
@@ -54,18 +62,26 @@ private[sqlitenative] class SqliteShim[F[_]: Sync](db: SQLiteConnection){
       }
     }
     var i = 0
-    val buffer = new scala.collection.mutable.ListBuffer[SqliteType]
+    val buffer = new scala.collection.mutable.ListBuffer[List[SqliteType]]
     while (p.step()){
-      val intermediate : Option[SqliteType] = p.columnValue(i) match {
-        case null => SqliteNull().some
-        case i: Int => SqliteInt(i).some
-        case b: Array[Byte] => SqliteArray(b).some
-        case d: Double => SqliteDouble(d).some
-        case l: Long => SqliteLong(l).some
-        case s: String => SqliteString(s).some
-        case _ => None
+      val collumnCount = p.columnCount()
+      val rowIntermediate = new scala.collection.mutable.ListBuffer[SqliteType]
+
+      for {
+        i <- 0 until collumnCount
+      } yield {
+        val columnIntermediate = p.columnValue(i) match {
+          case null => SqliteNull().some
+          case i: Int => SqliteInt(i).some
+          case b: Array[Byte] => SqliteArray(b).some
+          case d: Double => SqliteDouble(d).some
+          case l: Long => SqliteLong(l).some
+          case s: String => SqliteString(s).some
+          case _ => None
+        }
+        columnIntermediate.foreach(s => rowIntermediate += s)
       }
-      intermediate.foreach(s => buffer += s)
+      buffer += rowIntermediate.toList
       i = i + 1
     }
     p.dispose() // Make Resource
