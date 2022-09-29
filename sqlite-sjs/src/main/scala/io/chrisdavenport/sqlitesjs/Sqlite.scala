@@ -30,7 +30,7 @@ object Sqlite {
         db.get(sql, convertJsonToJs(params.asJson))
       })
       .flatMap(undef => undef.toOption.traverse(a => convertJsToJson(a).liftTo[F]))
-      
+
     
     def all(sql: String, params: List[Json]): F[List[Json]] = 
       Async[F].fromPromise(Async[F].delay{

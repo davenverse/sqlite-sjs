@@ -8,7 +8,7 @@ import cats.syntax.all._
 case class IntBoolean(boolean: Boolean)
 object IntBoolean {
   implicit val decoder: Decoder[IntBoolean] = new Decoder[IntBoolean]{
-    def apply(c: HCursor): Decoder.Result[IntBoolean] = 
+    def apply(c: HCursor): Decoder.Result[IntBoolean] =
       Decoder[Int].emap{
         case 0 => IntBoolean(false).asRight
         case 1 => IntBoolean(true).asRight
