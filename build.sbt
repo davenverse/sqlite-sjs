@@ -19,7 +19,7 @@ ThisBuild / testFrameworks += new TestFramework("munit.Framework")
 
 val catsV = "2.7.0"
 val catsEffectV = "3.3.14"
-val fs2V = "3.2.9"
+val fs2V = "3.2.14"
 val http4sV = "0.23.11"
 val circeV = "0.14.2"
 val doobieV = "1.0.0-RC2"
