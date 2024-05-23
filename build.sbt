@@ -23,7 +23,7 @@ val fs2V = "3.2.9"
 val http4sV = "0.23.11"
 val circeV = "0.14.2"
 val doobieV = "1.0.0-RC2"
-val munitCatsEffectV = "1.0.7"
+val munitCatsEffectV = "2.0.0"
 
 
 // Projects
@@ -52,7 +52,7 @@ lazy val core = project.in(file("core"))
 
       "io.circe"                    %%% "circe-parser"               % circeV % Test,
 
-      "org.typelevel"               %%% "munit-cats-effect-3"        % munitCatsEffectV         % Test,
+      "org.typelevel"               %%% "munit-cats-effect"        % munitCatsEffectV         % Test,
 
     )
   )
