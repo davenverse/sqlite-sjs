@@ -7,23 +7,22 @@ ThisBuild / developers := List(
   tlGitHubDev("christopherdavenport", "Christopher Davenport")
 )
 ThisBuild / tlCiReleaseBranches := Seq("main")
-ThisBuild / tlSonatypeUseLegacyHost := true
 
 
-val Scala213 = "2.13.7"
+val Scala213 = "2.13.18"
 
-ThisBuild / crossScalaVersions := Seq(Scala213, "3.1.1")
+ThisBuild / crossScalaVersions := Seq(Scala213, "3.3.8")
 ThisBuild / scalaVersion := Scala213
 
 ThisBuild / testFrameworks += new TestFramework("munit.Framework")
 
-val catsV = "2.7.0"
-val catsEffectV = "3.3.14"
-val fs2V = "3.2.9"
-val http4sV = "0.23.11"
+val catsV = "2.13.0"
+val catsEffectV = "3.7.1"
+val fs2V = "3.14.0"
+val http4sV = "0.23.37"
 val circeV = "0.14.2"
 val doobieV = "1.0.0-RC2"
-val munitCatsEffectV = "1.0.7"
+val munitCatsEffectV = "2.2.1"
 
 
 // Projects
@@ -52,7 +51,7 @@ lazy val core = project.in(file("core"))
 
       "io.circe"                    %%% "circe-parser"               % circeV % Test,
 
-      "org.typelevel"               %%% "munit-cats-effect-3"        % munitCatsEffectV         % Test,
+      "org.typelevel"               %%% "munit-cats-effect"        % munitCatsEffectV         % Test,
 
     )
   )
